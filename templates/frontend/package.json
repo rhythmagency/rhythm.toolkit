@@ -1,0 +1,11 @@
+{
+	"name": "RhythmInteractive",
+	"version": "0.0.0",
+	"description": "",
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"jquery-browser": "*",
+		"rhythm.framework": "*"
+	}
+}

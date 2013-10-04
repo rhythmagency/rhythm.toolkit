@@ -15,9 +15,10 @@
 _vti_cnf
 _notes
 
-# General Cache
+# General
 ############################
 .sass-cache
+.log
 
 # OS Generated
 ############################
@@ -30,15 +31,8 @@ ehthumbs.db
 Thumbs.db
 *.swp
 
-# node.js
+# Umbraco temp and log files
 ############################
-npm-debug.log
-/node_modules
-
-# Other
-############################
-*.seed
-*.log
-*.dat
-*.out
-*.pid
+*/App_Data/TEMP
+*/App_Data/Logs
+*/App_Data/courier/cache

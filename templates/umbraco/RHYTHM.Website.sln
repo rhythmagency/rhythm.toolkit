@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "RHYTHM.Website", "http://localhost:61659", "{B1DC35E4-28F9-4A25-A5CA-8D034D24D3A5}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{f6a42ab6-446f-4e27-ae64-925e73083c07}|RHYTHM.Extensions.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_61659"
+		Debug.AspNetCompiler.PhysicalPath = "RHYTHM.Website\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61659\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_61659"
+		Release.AspNetCompiler.PhysicalPath = "RHYTHM.Website\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61659\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "RHYTHM.Website\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHYTHM.Extensions", "RHYTHM.Extensions\RHYTHM.Extensions.csproj", "{F6A42AB6-446F-4E27-AE64-925E73083C07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1DC35E4-28F9-4A25-A5CA-8D034D24D3A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DC35E4-28F9-4A25-A5CA-8D034D24D3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DC35E4-28F9-4A25-A5CA-8D034D24D3A5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DC35E4-28F9-4A25-A5CA-8D034D24D3A5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{F6A42AB6-446F-4E27-AE64-925E73083C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A42AB6-446F-4E27-AE64-925E73083C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A42AB6-446F-4E27-AE64-925E73083C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A42AB6-446F-4E27-AE64-925E73083C07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
