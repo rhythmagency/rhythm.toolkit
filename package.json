@@ -29,7 +29,8 @@
     "path-extra": "~0.1.1",
     "underscore": "~1.5.2",
     "gift": "0.0.6",
-    "MD5": "~1.1.0"
+    "MD5": "~1.1.0",
+    "bluebird": "~0.7.9-1"
   },
   "devDependencies": {},
   "scripts": {},
