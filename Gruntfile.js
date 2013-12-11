@@ -241,11 +241,11 @@ module.exports = function (grunt) {
 			}
 		},
 
-		'auto_install': {
+		'install-dependencies': {
 			'options': {
 				'cwd': '<%= config.paths.project.frontend %>',
 				'stdout': true,
-				'stderr': true,
+				'stderr': false,
 				'failOnError': true
 			}
 		},
@@ -257,8 +257,8 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('default', ['build']);
-	grunt.registerTask('umbraco', ['copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'auto_install', 'curl:umbraco', 'unzip:umbraco']);
-	grunt.registerTask('frontend', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'auto_install']);
+	grunt.registerTask('umbraco', ['copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco']);
+	grunt.registerTask('frontend', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies']);
 	grunt.task.registerMultiTask('build', 'Build', function () {
 		grunt.task.run(this.data);
 	});

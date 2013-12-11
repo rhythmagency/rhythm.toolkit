@@ -1,12 +1,16 @@
 {
 	"name": "RHYTHM",
 	"version": "0.0.1",
-	"description": "",
+	"description": "Website for RHYTHM",
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
 		"jquery-browser": "*",
 		"underscore": "*",
 		"rhythm.framework": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:rhythmagency/RHYTHM.git"
 	}
 }
