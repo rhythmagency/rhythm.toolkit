@@ -1,0 +1,20 @@
+!!!
+head
+	title #{ titlePrefix + title + titleSuffix }
+	link(rel="apple-touch-icon-precomposed", href="/images/favicon/favicon-57x57.png")
+	link(rel="apple-touch-icon-precomposed", sizes="72x72", href="/images/favicon/favicon-72x72.png")
+	link(rel="apple-touch-icon-precomposed", sizes="114x114", href="/images/favicon/favicon-114x114.png")
+	link(rel="apple-touch-icon-precomposed", sizes="144x144", href="/images/favicon/favicon-144x144.png")
+	link(href="/favicon.ico", type="image/x-icon", rel="icon")
+	link(href="/favicon.ico", type="image/x-icon", rel="shortcut icon")
+	meta(name="viewport", content="width=device-width, initial-scale=1.0")
+	meta(name="description", content="")
+	meta(name="keywords", content="")
+	link(rel="stylesheet", href="/css/app.css")
+	script(src="/js/app.min.js")
+body
+	article
+		header
+		section
+			!= yield
+		footer
