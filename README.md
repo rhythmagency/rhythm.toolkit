@@ -1,4 +1,4 @@
 rhythm.toolkit
 ==============
 
-Documentation to come
+Toolkit for creating new projects and watching files in existing projects.
