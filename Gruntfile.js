@@ -15,7 +15,7 @@ module.exports = function (grunt) {
 		root;
 
 	if (!target) {
-		grunt.fail.fatal('-target not specified');
+		grunt.fail.fatal('Target not specified');
 	} else {
 		target = _(target).chain().trim().rtrim('/').rtrim('\\').value();
 
@@ -39,8 +39,10 @@ module.exports = function (grunt) {
 		'config': {
 			'pkg': grunt.file.readJSON('package.json'),
 			'name': name,
+			'data': grunt.file.readJSON(path.join(path.homedir(), '.rhythm.toolkit', 'data.json')),
 			'paths': {
 				'temp': path.join(path.tempdir(), 'rhythm.toolkit'),
+				'home': path.join(path.homedir(), '.rhythm.toolkit'),
 				'templates': {
 					'root': 'templates',
 					'docs': 'docs/**',
@@ -70,6 +72,7 @@ module.exports = function (grunt) {
 				'app_css_map': '<%= config.paths.project.css %>/app.css.map',
 				'app_less': '<%= config.paths.project.less %>/app.less',
 				'app_sass': '<%= config.paths.project.sass %>/app.scss',
+				'data': '<%= config.paths.home %>/data.json',
 				'zip': {
 					'umbraco': '<%= config.paths.temp %>/umbraco.zip'
 				},
@@ -250,6 +253,20 @@ module.exports = function (grunt) {
 			}
 		},
 
+		'http': {
+			'build': {
+				'options': {
+					'url': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/<%= config.name %>',
+					'method': 'POST',
+					'auth': {
+						'user': '<%= config.data.user %>',
+						'pass': '<%= config.data.pass %>'
+					}
+				},
+				'dest': '/Users/michael/Desktop/temp.txt'
+			}
+		},
+
 		'build': {
 			'js': ['browserify', 'uglify'],
 			'css': ['less', 'sass', 'cssc', 'cssmin']
@@ -257,9 +274,25 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('default', ['build']);
-	grunt.registerTask('umbraco', ['copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco']);
-	grunt.registerTask('frontend', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies']);
+
 	grunt.task.registerMultiTask('build', 'Build', function () {
 		grunt.task.run(this.data);
 	});
+
+	grunt.task.registerTask('login', 'Login to BitBucket', function (user, pass) {
+		var file = grunt.config.get('config.files.data'),
+			data = {
+				'user': user,
+				'pass': pass
+			};
+
+		grunt.file.write(file, JSON.stringify(data));
+	});
+
+	grunt.task.registerTask('data', 'data', function () {
+		console.log(grunt.config.get('config.data'));
+	});
+
+	grunt.registerTask('umbraco', ['copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco']);
+	grunt.registerTask('frontend', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies']);
 };

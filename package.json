@@ -1,53 +1,54 @@
 {
-	"name": "rhythm.toolkit",
-	"description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
-	"version": "0.0.1",
-	"author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
-	"contributors": [
-		{
-			"name": "Michael Lawrence",
-			"email": "michael.lawrence@rhythmagency.com"
-		}
-	],
-	"homepage": "http://rhythmagency.com",
-	"bugs": "https://github.com/rhythmagency/rhythm.toolkit/issues",
-	"main": "./rtk.js",
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:rhythmagency/rhythm.toolkit.git"
-	},
-	"devDependencies": {
-		"grunt": "*",
-		"grunt-contrib-cssmin": "*",
-		"grunt-contrib-sass": "*",
-		"grunt-contrib-uglify": "*",
-		"grunt-contrib-watch": "*",
-		"grunt-contrib-less": "*",
-		"grunt-cssc": "*",
-		"grunt-curl": "*",
-		"grunt-exists": "*",
-		"matchdep": "*",
-		"grunt-zip": "*",
-		"grunt-contrib-copy": "*",
-		"grunt-rename": "*",
-		"path-extra": "*",
-		"lodash": "*",
-		"handlebars": "*",
-		"hbsfy": "*",
-		"jade": "*",
-		"simple-jadeify": "*",
-		"underscore": "*",
-		"underscore.string": "*",
-		"browserify": "*",
-		"grunt-browserify": "*",
-		"grunt-install-dependencies": "*"
-	},
-	"license": "MIT",
-	"preferGlobal": true,
-	"bin": {
-		"rtk": "./bin/rtk"
-	},
-	"engines": {
-		"node": ">=0.10"
-	}
+  "name": "rhythm.toolkit",
+  "description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
+  "version": "0.0.1",
+  "author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
+  "contributors": [
+    {
+      "name": "Michael Lawrence",
+      "email": "michael.lawrence@rhythmagency.com"
+    }
+  ],
+  "homepage": "http://rhythmagency.com",
+  "bugs": "https://github.com/rhythmagency/rhythm.toolkit/issues",
+  "main": "./rtk.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rhythmagency/rhythm.toolkit.git"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-sass": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-less": "*",
+    "grunt-cssc": "*",
+    "grunt-curl": "*",
+    "grunt-exists": "*",
+    "matchdep": "*",
+    "grunt-zip": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-rename": "*",
+    "path-extra": "*",
+    "lodash": "*",
+    "handlebars": "*",
+    "hbsfy": "*",
+    "jade": "*",
+    "simple-jadeify": "*",
+    "underscore": "*",
+    "underscore.string": "*",
+    "browserify": "*",
+    "grunt-browserify": "*",
+    "grunt-install-dependencies": "*",
+    "grunt-http": "~1.0.1"
+  },
+  "license": "MIT",
+  "preferGlobal": true,
+  "bin": {
+    "rtk": "./bin/rtk"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
 }

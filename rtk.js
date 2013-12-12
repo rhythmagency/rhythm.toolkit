@@ -4,11 +4,11 @@ var path = require('path-extra'),
 	args = _.rest(process.argv, 2);
 
 if (args.length < 1) {
-	console.log('Usage: rtk [task] [target]');
+	console.log('Usage: rtk [task] [projectname] [target]');
 	console.log('');
 	console.log('Tasks:');
 
-	['frontend [projectname]', 'umbraco [projectname]', 'build', 'watch'].sort().forEach(function (task) {
+	['login:[user]:[pass]', 'frontend', 'umbraco', 'build', 'watch'].sort().forEach(function (task) {
 		console.log('*', task);
 	});
 
