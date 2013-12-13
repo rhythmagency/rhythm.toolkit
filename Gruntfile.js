@@ -12,7 +12,14 @@ module.exports = function (grunt) {
 
 	var target = grunt.option('target'),
 		name = grunt.option('name'),
-		root;
+		domain = grunt.option('domain'),
+		root,
+		gitOptions = {
+			'stdout': true,
+			'execOptions': {
+				'cwd': '<%= config.paths.project.root %>'
+			}
+		};
 
 	if (!target) {
 		grunt.fail.fatal('Target not specified');
@@ -32,6 +39,8 @@ module.exports = function (grunt) {
 		grunt.fail.fatal('-name not specified');
 	}
 
+	domain = domain || name; // Fall back to name if no domain specified
+
 	grunt.loadNpmTasks('grunt-file-regex-rename-mod');
 	grunt.loadNpmTasks('grunt-text-replace-mod');
 
@@ -39,6 +48,7 @@ module.exports = function (grunt) {
 		'config': {
 			'pkg': grunt.file.readJSON('package.json'),
 			'name': name,
+			'domain': domain,
 			'data': grunt.file.readJSON(path.join(path.homedir(), '.rhythm.toolkit', 'data.json')),
 			'paths': {
 				'temp': path.join(path.tempdir(), 'rhythm.toolkit'),
@@ -254,28 +264,103 @@ module.exports = function (grunt) {
 		},
 
 		'http': {
-			'build': {
+			'create': {
 				'options': {
-					'url': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/<%= config.name %>',
+					'url': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
 					'method': 'POST',
 					'auth': {
 						'user': '<%= config.data.user %>',
 						'pass': '<%= config.data.pass %>'
+					},
+					'body': 'name=<%= config.domain %>&is_private=1&description=Website%20for%20<%= config.domain %>'
+				}
+			},
+			'delete': {
+				'options': {
+					'url': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
+					'method': 'DELETE',
+					'auth': {
+						'user': '<%= config.data.user %>',
+						'pass': '<%= config.data.pass %>'
 					}
-				},
-				'dest': '/Users/michael/Desktop/temp.txt'
+				}
+			}
+		},
+
+		'shell': {
+			'gitclone': {
+				'options': gitOptions,
+				'command': 'git clone git@bitbucket.org:rhythminteractive/<%= config.name %>.git .'
+			},
+			'gitremote': {
+				'options': gitOptions,
+				'command': 'git remote add origin ssh://git@bitbucket.org/rhythminteractive/<%= config.name %>.git'
+			},
+			'gitcheckoutmaster': {
+				'options': gitOptions,
+				'command': 'git checkout -b master'
+			},
+			'gitcheckoutdevelopment': {
+				'options': gitOptions,
+				'command': 'git checkout -b development'
+			},
+			'gitcheckoutfrontend': {
+				'options': gitOptions,
+				'command': 'git checkout -b feature/frontend'
+			},
+			'gitadd': {
+				'options': gitOptions,
+				'command': 'git add .'
+			},
+			'gitcommit': {
+				'options': gitOptions,
+				'command': 'git commit -m "Initial Commit."'
+			},
+			'gitpushmaster': {
+				'options': gitOptions,
+				'command': 'git push origin master'
+			},
+			'gitpushdevelopment': {
+				'options': gitOptions,
+				'command': 'git push origin development'
+			},
+			'gitpushfrontend': {
+				'options': gitOptions,
+				'command': 'git push origin feature/frontend'
+			},
+			'gitmerge': {
+				'options': gitOptions,
+				'command': 'git merge master'
 			}
 		},
 
 		'build': {
 			'js': ['browserify', 'uglify'],
 			'css': ['less', 'sass', 'cssc', 'cssmin']
+		},
+
+		'git': {
+			'init': ['shell:gitclone', 'shell:gitremote', 'shell:gitcheckoutmaster'],
+			'push': ['shell:gitadd', 'shell:gitcommit', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
 		}
 	});
 
+
 	grunt.registerTask('default', ['build']);
 
-	grunt.task.registerMultiTask('build', 'Build', function () {
+	grunt.registerTask('test', function () {
+		_.map(grunt.file.expandFiles(grunt.config.get('config.paths.project.root') + '/**'), function (to) {
+			var file = path.relative(grunt.config.get('config.paths.project.root'), to);
+			console.log(file);
+			return file;
+		});
+	});
+
+	grunt.task.registerMultiTask('build', 'Build Tasks', function () {
+		grunt.task.run(this.data);
+	});
+
+	grunt.task.registerMultiTask('git', 'Git Tasks', function () {
 		grunt.task.run(this.data);
 	});
 
@@ -293,6 +378,6 @@ module.exports = function (grunt) {
 		console.log(grunt.config.get('config.data'));
 	});
 
-	grunt.registerTask('umbraco', ['copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco']);
-	grunt.registerTask('frontend', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies']);
+	grunt.registerTask('umbraco', ['http:create', 'gitclone', 'gitcheckout:development', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco', 'gitcommit', 'gitcheckout:frontend', 'gitpush']);
+	grunt.registerTask('frontend', ['http:create', 'git:init', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies', 'git:push']);
 };

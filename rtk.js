@@ -4,7 +4,7 @@ var path = require('path-extra'),
 	args = _.rest(process.argv, 2);
 
 if (args.length < 1) {
-	console.log('Usage: rtk [task] [projectname] [target]');
+	console.log('Usage: rtk [task] [projectname] [domain] [target]');
 	console.log('');
 	console.log('Tasks:');
 
@@ -23,14 +23,26 @@ if (args.length < 1) {
 
 var task = args[0],
 	name = args[1],
-	target = args[2] || process.cwd();
+	domain = args[2],
+	target = args[3] || process.cwd(),
+	procArgs = ['--gruntfile=' + path.join(__dirname, 'Gruntfile.js')];
 
-var gruntProc = spawn('grunt', [
-	'--gruntfile=' + path.join(__dirname, 'Gruntfile.js'),
-	'-target=' + target,
-	'-name=' + name,
-	task
-]);
+if (target) {
+	procArgs.push('-target=' + target);
+}
+
+if (name) {
+	procArgs.push('-name=' + name);
+}
+
+if (domain) {
+	procArgs.push('-domain=' + domain);
+}
+
+//procArgs.push('--verbose');
+procArgs.push(task);
+
+var gruntProc = spawn('grunt', procArgs);
 
 gruntProc.stdout.on('data', function (data) {
 	console.log(data.toString());
