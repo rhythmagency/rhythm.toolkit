@@ -33,7 +33,7 @@ Thumbs.db
 # node.js
 ############################
 npm-debug.log
-/node_modules
+/node_modules/*/*
 
 # Other
 ############################
@@ -42,3 +42,8 @@ npm-debug.log
 *.dat
 *.out
 *.pid
+
+
+#Modified node modules
+!/node_modules/grunt-file-regex-rename-mod/*
+!/node_modules/grunt-text-replace-mod/*
