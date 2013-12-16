@@ -16,6 +16,7 @@ module.exports = function (grunt) {
 		root,
 		gitOptions = {
 			'stdout': true,
+			'stderr': true,
 			'execOptions': {
 				'cwd': '<%= config.paths.project.root %>'
 			}
@@ -51,6 +52,8 @@ module.exports = function (grunt) {
 			'domain': domain,
 			'data': grunt.file.readJSON(path.join(path.homedir(), '.rhythm.toolkit', 'data.json')),
 			'paths': {
+				'bitbucket': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
+				'git': 'ssh://git@bitbucket.org/rhythminteractive/',
 				'temp': path.join(path.tempdir(), 'rhythm.toolkit'),
 				'home': path.join(path.homedir(), '.rhythm.toolkit'),
 				'templates': {
@@ -266,7 +269,7 @@ module.exports = function (grunt) {
 		'http': {
 			'create': {
 				'options': {
-					'url': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
+					'url': '<%= config.paths.bitbucket %>',
 					'method': 'POST',
 					'auth': {
 						'user': '<%= config.data.user %>',
@@ -277,7 +280,7 @@ module.exports = function (grunt) {
 			},
 			'delete': {
 				'options': {
-					'url': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
+					'url': '<%= config.paths.bitbucket %>',
 					'method': 'DELETE',
 					'auth': {
 						'user': '<%= config.data.user %>',
@@ -290,11 +293,11 @@ module.exports = function (grunt) {
 		'shell': {
 			'gitclone': {
 				'options': gitOptions,
-				'command': 'git clone git@bitbucket.org:rhythminteractive/<%= config.name %>.git .'
+				'command': 'git clone <%= config.paths.git %><%= config.name %>.git .'
 			},
 			'gitremote': {
 				'options': gitOptions,
-				'command': 'git remote add origin ssh://git@bitbucket.org/rhythminteractive/<%= config.name %>.git'
+				'command': 'git remote add origin <%= config.paths.git %><%= config.name %>.git'
 			},
 			'gitcheckoutmaster': {
 				'options': gitOptions,
@@ -310,7 +313,7 @@ module.exports = function (grunt) {
 			},
 			'gitadd': {
 				'options': gitOptions,
-				'command': 'git add .'
+				'command': 'git add -A'
 			},
 			'gitcommit': {
 				'options': gitOptions,
@@ -340,7 +343,7 @@ module.exports = function (grunt) {
 		},
 
 		'git': {
-			'init': ['shell:gitclone', 'shell:gitremote', 'shell:gitcheckoutmaster'],
+			'init': ['shell:gitclone', 'shell:gitcheckoutmaster'],
 			'push': ['shell:gitadd', 'shell:gitcommit', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
 		}
 	});
@@ -378,6 +381,6 @@ module.exports = function (grunt) {
 		console.log(grunt.config.get('config.data'));
 	});
 
-	grunt.registerTask('umbraco', ['http:create', 'gitclone', 'gitcheckout:development', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco', 'gitcommit', 'gitcheckout:frontend', 'gitpush']);
+	grunt.registerTask('umbraco', ['http:create', 'git:init', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
 	grunt.registerTask('frontend', ['http:create', 'git:init', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies', 'git:push']);
 };
