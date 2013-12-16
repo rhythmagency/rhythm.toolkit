@@ -60,10 +60,12 @@ module.exports = function (grunt) {
 					'root': 'templates',
 					'docs': 'docs/**',
 					'frontend': 'frontend/**',
-					'umbraco': 'umbraco/**'
+					'umbraco': 'umbraco/**',
+					'gitignore': './templates/git/gitignore.txt'
 				},
 				'project': {
 					'root': root || '.',
+					'gitignore': '<%= config.paths.project.root %>/.gitignore',
 					'trunk': '<%= config.paths.project.root %>/trunk',
 					'frontend': '<%= config.paths.project.trunk %>/<%= config.name %>.Frontend',
 					'website': '<%= config.paths.project.trunk %>/<%= config.name %>.Website',
@@ -334,6 +336,13 @@ module.exports = function (grunt) {
 			'gitmerge': {
 				'options': gitOptions,
 				'command': 'git merge master'
+			},
+			'gitignore': {
+				'options': {
+					'stdout': true,
+					'stderr': true
+				},
+				'command': 'cp "<%= config.paths.templates.gitignore %>" "<%= config.paths.project.gitignore %>"'
 			}
 		},
 
@@ -381,6 +390,6 @@ module.exports = function (grunt) {
 		console.log(grunt.config.get('config.data'));
 	});
 
-	grunt.registerTask('umbraco', ['http:create', 'git:init', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
-	grunt.registerTask('frontend', ['http:create', 'git:init', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies', 'git:push']);
+	grunt.registerTask('umbraco', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
+	grunt.registerTask('frontend', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies', 'git:push']);
 };
