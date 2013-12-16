@@ -360,14 +360,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('default', ['build']);
 
-	grunt.registerTask('test', function () {
-		_.map(grunt.file.expandFiles(grunt.config.get('config.paths.project.root') + '/**'), function (to) {
-			var file = path.relative(grunt.config.get('config.paths.project.root'), to);
-			console.log(file);
-			return file;
-		});
-	});
-
 	grunt.task.registerMultiTask('build', 'Build Tasks', function () {
 		grunt.task.run(this.data);
 	});
