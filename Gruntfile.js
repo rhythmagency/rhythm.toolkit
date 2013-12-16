@@ -47,7 +47,6 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		'config': {
-			'pkg': grunt.file.readJSON('package.json'),
 			'name': name,
 			'domain': domain,
 			'data': grunt.file.readJSON(path.join(path.homedir(), '.rhythm.toolkit', 'data.json')),
@@ -70,10 +69,6 @@ module.exports = function (grunt) {
 					'frontend': '<%= config.paths.project.trunk %>/<%= config.name %>.Frontend',
 					'website': '<%= config.paths.project.trunk %>/<%= config.name %>.Website',
 					'umbraco': '<%= config.paths.project.website %>/<%= config.name %>.Website',
-					'css': '<%= config.paths.project.frontend %>/css',
-					'less': '<%= config.paths.project.frontend %>/less',
-					'sass': '<%= config.paths.project.frontend %>/sass',
-					'js': '<%= config.paths.project.frontend %>/js',
 					'templates': {
 						'frontend': '<%= config.paths.project.trunk %>/frontend',
 						'umbraco': '<%= config.paths.project.trunk %>/umbraco'
@@ -81,12 +76,6 @@ module.exports = function (grunt) {
 				}
 			},
 			'files': {
-				'app_js': '<%= config.paths.project.js %>/app.js',
-				'app_min_js': '<%= config.paths.project.js %>/app.min.js',
-				'app_css': '<%= config.paths.project.css %>/app.css',
-				'app_css_map': '<%= config.paths.project.css %>/app.css.map',
-				'app_less': '<%= config.paths.project.less %>/app.less',
-				'app_sass': '<%= config.paths.project.sass %>/app.scss',
 				'data': '<%= config.paths.home %>/data.json',
 				'zip': {
 					'umbraco': '<%= config.paths.temp %>/umbraco.zip'
@@ -94,86 +83,6 @@ module.exports = function (grunt) {
 				'remote': {
 					'umbraco': 'http://our.umbraco.org/ReleaseDownload?id=100660'
 				}
-			},
-			'watch': {
-				'glob': '<%= config.paths.project.js %>/**/*. %>',
-				'js': '<%= config.watch.glob %>/js %>',
-				'js_hbs': '<%= config.watch.glob %>/hbs %>',
-				'js_jade': '<%= config.watch.glob %>/jade %>',
-				'less': '<%= config.watch.glob %>/less %>',
-				'sass': '<%= config.watch.glob %>/scss %>'
-			}
-		},
-
-		'uglify': {
-			'build': {
-				'files': {
-					'<%= config.files.app_min_js %>': ['<%= config.files.app_min_js %>']
-				}
-			}
-		},
-
-		'browserify': {
-			'build': {
-				'files': {
-					'<%= config.files.app_min_js %>': ['<%= config.files.app_js %>']
-				},
-				'options': {
-					transform: ['hbsfy', 'simple-jadeify']
-				}
-			}
-		},
-
-		'cssc': {
-			'build': {
-				'options': {
-					'consolidateViaDeclarations': true,
-					'consolidateViaSelectors': true,
-					'consolidateMediaQueries': true
-				},
-				'files': {
-					'<%= config.files.app_css %>': '<%= config.files.app_css %>'
-				}
-			}
-		},
-
-		'cssmin': {
-			'build': {
-				'src': '<%= config.files.app_css %>',
-				'dest': '<%= config.files.app_css %>'
-			}
-		},
-
-		'sass': {
-			'build': {
-				'files': {
-					'<%= config.files.app_css %>': '<%= config.files.app_sass %>'
-				}
-			}
-		},
-
-		'less': {
-			'build': {
-				'options': {
-					'compress': true,
-					'cleancss': true,
-					'sourceMap': true,
-					'sourceMapFilename': '<%= config.files.app_css_map %>'
-				},
-				'files': {
-					'<%= config.files.app_css %>': '<%= config.files.app_less %>'
-				}
-			}
-		},
-
-		'watch': {
-			'js': {
-				'files': ['<%= config.watch.js %>', '<%= config.watch.js_hbs %>', '<%= config.watch.js_jade %>', '!<%= config.files.app_min_js %>'],
-				'tasks': ['build:js']
-			},
-			'css': {
-				'files': ['<%= config.watch.less %>', '<%= config.watch.sass %>'],
-				'tasks': ['build:css']
 			}
 		},
 
@@ -259,15 +168,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		'install-dependencies': {
-			'options': {
-				'cwd': '<%= config.paths.project.frontend %>',
-				'stdout': true,
-				'stderr': false,
-				'failOnError': true
-			}
-		},
-
 		'http': {
 			'create': {
 				'options': {
@@ -340,15 +240,20 @@ module.exports = function (grunt) {
 			'gitignore': {
 				'options': {
 					'stdout': true,
-					'stderr': true
+					'stderr': false
 				},
 				'command': 'cp "<%= config.paths.templates.gitignore %>" "<%= config.paths.project.gitignore %>"'
+			},
+			'npminstall': {
+				'options': {
+					'stdout': true,
+					'stderr': false,
+					'execOptions': {
+						'cwd': '<%= config.paths.project.frontend %>'
+					}
+				},
+				'command': 'npm install'
 			}
-		},
-
-		'build': {
-			'js': ['browserify', 'uglify'],
-			'css': ['less', 'sass', 'cssc', 'cssmin']
 		},
 
 		'git': {
@@ -358,11 +263,7 @@ module.exports = function (grunt) {
 	});
 
 
-	grunt.registerTask('default', ['build']);
-
-	grunt.task.registerMultiTask('build', 'Build Tasks', function () {
-		grunt.task.run(this.data);
-	});
+	grunt.registerTask('default', ['login']);
 
 	grunt.task.registerMultiTask('git', 'Git Tasks', function () {
 		grunt.task.run(this.data);
@@ -378,10 +279,6 @@ module.exports = function (grunt) {
 		grunt.file.write(file, JSON.stringify(data));
 	});
 
-	grunt.task.registerTask('data', 'data', function () {
-		console.log(grunt.config.get('config.data'));
-	});
-
-	grunt.registerTask('umbraco', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'install-dependencies', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
-	grunt.registerTask('frontend', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'install-dependencies', 'git:push']);
+	grunt.registerTask('umbraco', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'shell:npminstall', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
+	grunt.registerTask('frontend', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'shell:npminstall', 'git:push']);
 };

@@ -25,7 +25,6 @@
 		"grunt-contrib-less": "*",
 		"grunt-cssc": "*",
 		"grunt-curl": "*",
-		"grunt-exists": "*",
 		"matchdep": "*",
 		"grunt-zip": "*",
 		"grunt-contrib-copy": "*",
@@ -40,7 +39,6 @@
 		"underscore.string": "*",
 		"browserify": "*",
 		"grunt-browserify": "*",
-		"grunt-install-dependencies": "*",
 		"grunt-http": "*",
 		"grunt-shell": "*"
 	},

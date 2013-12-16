@@ -9,6 +9,22 @@
 		"underscore": "*",
 		"rhythm.framework": "*"
 	},
+	"devDependencies": {
+		"grunt": "*",
+		"grunt-contrib-cssmin": "*",
+		"grunt-contrib-sass": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-contrib-less": "*",
+		"grunt-cssc": "*",
+		"matchdep": "*",
+		"handlebars": "*",
+		"hbsfy": "*",
+		"jade": "*",
+		"simple-jadeify": "*",
+		"browserify": "*",
+		"grunt-browserify": "*"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:rhythmagency/RHYTHM.git"
