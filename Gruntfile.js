@@ -37,10 +37,6 @@ try {
 			}
 		}
 
-		if (!name) {
-			grunt.fail.fatal('-name not specified');
-		}
-
 		domain = domain || name; // Fall back to name if no domain specified
 
 		grunt.loadTasks('./lib/grunt-file-regex-rename-mod/tasks');
@@ -48,14 +44,31 @@ try {
 
 		grunt.initConfig({
 			'config': {
-				'name': name,
-				'domain': domain,
+				'name': function () {
+					if (!name) {
+						grunt.fail.fatal('-name not specified');
+					}
+
+					return name;
+				},
+				'domain': function () {
+					if (!domain) {
+						grunt.fail.fatal('-domain not specified');
+					}
+
+					return domain;
+				},
 				'data': function () {
 					var file = grunt.config.get('config.files.data');
+
 					return (grunt.file.exists(file)) ? grunt.file.readJSON(file) : {};
 				},
 				'paths': {
-					'bitbucket': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
+					'bitbucket': function() {
+						var name = grunt.config.get('config.name');
+
+						return 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase();
+					},
 					'git': 'ssh://git@bitbucket.org/rhythminteractive/',
 					'temp': path.join(path.tempdir(), 'rhythm.toolkit'),
 					'home': path.join(path.homedir(), '.rhythm.toolkit'),
