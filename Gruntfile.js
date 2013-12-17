@@ -50,7 +50,10 @@ try {
 			'config': {
 				'name': name,
 				'domain': domain,
-				'data': grunt.file.readJSON(path.join(path.homedir(), '.rhythm.toolkit', 'data.json')),
+				'data': function () {
+					var file = grunt.config.get('config.files.data');
+					return (grunt.file.exists(file)) ? grunt.file.readJSON(file) : {};
+				},
 				'paths': {
 					'bitbucket': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase(),
 					'git': 'ssh://git@bitbucket.org/rhythminteractive/',
