@@ -257,23 +257,37 @@ try {
 				}
 			},
 
+			'wait': {
+				'gitindexlock': {
+					'options': {
+						'delay': 500,
+						'before': function (options) {
+							var lock = grunt.config.get('config.files.gitindexlock');
+
+							if (!grunt.file.exists(lock)) {
+								return false;
+							}
+
+							console.log('pausing %dms', options.delay);
+						},
+						'after': function () {
+							var lock = grunt.config.get('config.files.gitindexlock');
+
+							if (grunt.file.exists(lock)) {
+								return true;
+							}
+						}
+					}
+				}
+			},
+
 			'git': {
-				'init': ['shell:gitclone', 'gitremovelock', 'shell:gitcheckoutmaster'],
-				'push': ['shell:gitadd', 'shell:gitcommit', 'gitremovelock', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
+				'init': ['shell:gitclone', 'wait:gitindexlock', 'shell:gitcheckoutmaster', 'wait:gitindexlock'],
+				'push': ['shell:gitadd', 'wait:gitindexlock', 'shell:gitcommit', 'wait:gitindexlock', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
 			}
 		});
 
 		grunt.registerTask('default', ['login']);
-
-		grunt.registerTask('gitremovelock', 'Remove Git index.lock file.', function () {
-			var lock = grunt.config.get('config.files.gitindexlock');
-
-			if (grunt.file.exists(lock)) {
-				grunt.file.delete(lock, {
-					'force': true
-				});
-			}
-		});
 
 		grunt.task.registerMultiTask('git', 'Git Tasks', function () {
 			grunt.task.run(this.data);
