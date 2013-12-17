@@ -9,7 +9,7 @@ try {
 		console.log('');
 		console.log('Tasks:');
 
-		['login:[user]:[pass]', 'frontend', 'umbraco', 'build', 'watch'].sort().forEach(function (task) {
+		['login:[user]:[pass]', 'frontend', 'umbraco'].sort().forEach(function (task) {
 			console.log('*', task);
 		});
 
@@ -40,10 +40,17 @@ try {
 		procArgs.push('-domain=' + domain);
 	}
 
-//procArgs.push('--verbose');
+	//procArgs.push('--verbose');
 	procArgs.push(task);
 
-	var gruntProc = spawn('grunt', procArgs);
+	var gruntPath = 'grunt';
+
+	// If launching from windows we need to add .cmd to the path.
+	if (!!process.platform.match(/^win/)) {
+		gruntPath += '.cmd';
+	}
+
+	var gruntProc = spawn(gruntPath, procArgs);
 
 	gruntProc.stdout.on('data', function (data) {
 		console.log(data.toString());

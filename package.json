@@ -1,7 +1,7 @@
 {
 	"name": "rhythm.toolkit",
 	"description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
-	"version": "0.0.6",
+	"version": "0.0.6240",
 	"author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
 	"contributors": [
 		{
@@ -33,6 +33,9 @@
 	"preferGlobal": true,
 	"bin": {
 		"rtk": "./bin/rtk"
+	},
+	"scripts": {
+		"preinstall": "npm i -g grunt-cli"
 	},
 	"engines": {
 		"node": ">=0.10"

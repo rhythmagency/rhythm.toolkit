@@ -43,8 +43,8 @@ try {
 
 		domain = domain || name; // Fall back to name if no domain specified
 
-		grunt.loadNpmTasks('grunt-file-regex-rename-mod');
-		grunt.loadNpmTasks('grunt-text-replace-mod');
+		grunt.loadTasks('./lib/grunt-file-regex-rename-mod/tasks');
+		grunt.loadTasks('./lib/grunt-text-replace-mod/tasks');
 
 		grunt.initConfig({
 			'config': {
