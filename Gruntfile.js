@@ -77,6 +77,7 @@ try {
 				},
 				'files': {
 					'data': dataPath,
+					'gitindexlock': '<%= config.paths.project.root %>/.git/index.lock',
 					'zip': {
 						'umbraco': '<%= config.paths.temp %>/umbraco.zip'
 					},
@@ -257,12 +258,22 @@ try {
 			},
 
 			'git': {
-				'init': ['shell:gitclone', 'shell:gitcheckoutmaster'],
-				'push': ['shell:gitadd', 'shell:gitcommit', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
+				'init': ['shell:gitclone', 'gitremovelock', 'shell:gitcheckoutmaster'],
+				'push': ['shell:gitadd', 'shell:gitcommit', 'gitremovelock', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
 			}
 		});
 
 		grunt.registerTask('default', ['login']);
+
+		grunt.registerTask('gitremovelock', 'Remove Git index.lock file.', function () {
+			var lock = grunt.config.get('config.files.gitindexlock');
+
+			if (grunt.file.exists(lock)) {
+				grunt.file.delete(lock, {
+					'force': true
+				});
+			}
+		});
 
 		grunt.task.registerMultiTask('git', 'Git Tasks', function () {
 			grunt.task.run(this.data);
