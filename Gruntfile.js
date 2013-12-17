@@ -281,7 +281,11 @@ try {
 					'pass': pass
 				};
 
-			grunt.file.write(file, JSON.stringify(data));
+			grunt.file.mkdir(grunt.config.get('config.paths.home'));
+
+			grunt.file.write(file, JSON.stringify(data), {
+				'encoding': 'utf-8'
+			});
 		});
 
 		grunt.registerTask('umbraco', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'shell:npminstall', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
