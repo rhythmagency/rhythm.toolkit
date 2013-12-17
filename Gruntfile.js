@@ -9,7 +9,7 @@ try {
 
 	module.exports = function (grunt) {
 		// Load all grunt plugins
-		require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+		require('matchdep').filter('grunt-*').forEach(grunt.loadNpmTasks);
 
 		var target = grunt.option('target'),
 			name = grunt.option('name'),
@@ -271,6 +271,10 @@ try {
 		});
 
 		grunt.task.registerTask('login', 'Login to BitBucket', function (user, pass) {
+			if (!user || !pass) {
+				grunt.fail.fatal('Username and password cannot be blank.');
+			}
+
 			var file = grunt.config.get('config.files.data'),
 				data = {
 					'user': user,

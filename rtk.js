@@ -1,7 +1,7 @@
 try {
 	var path = require('path-extra'),
 		spawn = require('child_process').spawn,
-		_ = require('lodash'),
+		_ = require('underscore'),
 		args = _.rest(process.argv, 2);
 
 	if (args.length < 1) {

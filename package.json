@@ -1,7 +1,7 @@
 {
 	"name": "rhythm.toolkit",
 	"description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
 	"contributors": [
 		{
@@ -17,28 +17,15 @@
 		"url": "git@github.com:rhythmagency/rhythm.toolkit.git"
 	},
 	"dependencies": {
-		"browserify": "*",
 		"grunt": "*",
-		"grunt-browserify": "*",
 		"grunt-contrib-copy": "*",
-		"grunt-contrib-cssmin": "*",
-		"grunt-contrib-less": "*",
-		"grunt-contrib-sass": "*",
-		"grunt-contrib-uglify": "*",
-		"grunt-contrib-watch": "*",
-		"grunt-cssc": "*",
 		"grunt-curl": "*",
 		"grunt-http": "*",
 		"grunt-rename": "*",
 		"grunt-shell": "*",
 		"grunt-zip": "*",
-		"handlebars": "*",
-		"hbsfy": "*",
-		"jade": "*",
-		"lodash": "*",
 		"matchdep": "*",
 		"path-extra": "*",
-		"simple-jadeify": "*",
 		"underscore": "*",
 		"underscore.string": "*"
 	},
@@ -49,5 +36,6 @@
 	},
 	"engines": {
 		"node": ">=0.10"
-	}
+	},
+	"keywords": ["rhythm", "toolkit"]
 }
