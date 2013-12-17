@@ -21,7 +21,10 @@ try {
 				'execOptions': {
 					'cwd': '<%= config.paths.project.root %>'
 				}
-			};
+			},
+			tempPath = path.join(path.tempdir(), 'rhythm.toolkit'),
+			homePath = path.join(path.homedir(), '.rhythm.toolkit'),
+			dataPath = path.join(homePath, 'data.json');
 
 		if (!target) {
 			grunt.fail.fatal('Target not specified');
@@ -44,34 +47,14 @@ try {
 
 		grunt.initConfig({
 			'config': {
-				'name': function () {
-					if (!name) {
-						grunt.fail.fatal('-name not specified');
-					}
-
-					return name;
-				},
-				'domain': function () {
-					if (!domain) {
-						grunt.fail.fatal('-domain not specified');
-					}
-
-					return domain;
-				},
-				'data': function () {
-					var file = grunt.config.get('config.files.data');
-
-					return (grunt.file.exists(file)) ? grunt.file.readJSON(file) : {};
-				},
+				'name': name,
+				'domain': domain,
+				'data': grunt.file.readJSON(dataPath),
 				'paths': {
-					'bitbucket': function() {
-						var name = grunt.config.get('config.name');
-
-						return 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/' + name.toLowerCase();
-					},
+					'bitbucket': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/<%= config.name.toLowerCase() %>',
 					'git': 'ssh://git@bitbucket.org/rhythminteractive/',
-					'temp': path.join(path.tempdir(), 'rhythm.toolkit'),
-					'home': path.join(path.homedir(), '.rhythm.toolkit'),
+					'temp': tempPath,
+					'home': homePath,
 					'templates': {
 						'root': 'templates',
 						'docs': 'docs/**',
@@ -93,7 +76,7 @@ try {
 					}
 				},
 				'files': {
-					'data': '<%= config.paths.home %>/data.json',
+					'data': dataPath,
 					'zip': {
 						'umbraco': '<%= config.paths.temp %>/umbraco.zip'
 					},
@@ -279,7 +262,6 @@ try {
 			}
 		});
 
-
 		grunt.registerTask('default', ['login']);
 
 		grunt.task.registerMultiTask('git', 'Git Tasks', function () {
@@ -296,8 +278,6 @@ try {
 					'user': user,
 					'pass': pass
 				};
-
-			grunt.file.mkdir(grunt.config.get('config.paths.home'));
 
 			grunt.file.write(file, JSON.stringify(data), {
 				'encoding': 'utf-8'
