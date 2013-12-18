@@ -5,11 +5,11 @@ try {
 		args = _.rest(process.argv, 2);
 
 	if (args.length < 1) {
-		console.log('Usage: rtk [task] [projectname] [domain] [target]');
+		console.log('Usage: rtk [task] [target]');
 		console.log('');
 		console.log('Tasks:');
 
-		['login:[user]:[pass]', 'frontend', 'umbraco'].sort().forEach(function (task) {
+		['login:[account]:[user]:[pass]', 'frontend [projectname] [domain]', 'umbraco [projectname] [domain]'].forEach(function (task) {
 			console.log('*', task);
 		});
 

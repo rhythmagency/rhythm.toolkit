@@ -51,8 +51,8 @@ try {
 				'domain': domain,
 				'data': grunt.file.readJSON(dataPath),
 				'paths': {
-					'bitbucket': 'https://bitbucket.org/api/2.0/repositories/rhythminteractive/<%= config.name.toLowerCase() %>',
-					'git': 'ssh://git@bitbucket.org/rhythminteractive/',
+					'bitbucket': 'https://bitbucket.org/api/2.0/repositories/<%= config.data.account %>/<%= config.name.toLowerCase() %>',
+					'git': 'ssh://git@bitbucket.org/<%= config.data.account %>/',
 					'temp': tempPath,
 					'home': homePath,
 					'templates': {
@@ -82,7 +82,7 @@ try {
 						'umbraco': '<%= config.paths.temp %>/umbraco.zip'
 					},
 					'remote': {
-						'umbraco': 'http://our.umbraco.org/ReleaseDownload?id=100660'
+						'umbraco': 'http://our.umbraco.org/ReleaseDownload?id=104481'
 					}
 				}
 			},
@@ -287,19 +287,26 @@ try {
 			}
 		});
 
-		grunt.registerTask('default', ['login']);
-
 		grunt.task.registerMultiTask('git', 'Git Tasks', function () {
 			grunt.task.run(this.data);
 		});
 
-		grunt.task.registerTask('login', 'Login to BitBucket', function (user, pass) {
-			if (!user || !pass) {
-				grunt.fail.fatal('Username and password cannot be blank.');
+		grunt.task.registerTask('login', 'Login to BitBucket', function (account, user, pass) {
+			if (!account) {
+				grunt.fail.fatal('Parameter "account" missing.');
+			}
+
+			if (!user) {
+				grunt.fail.fatal('Parameter "user" missing.');
+			}
+
+			if (!pass) {
+				grunt.fail.fatal('Parameter "pass" missing.');
 			}
 
 			var file = grunt.config.get('config.files.data'),
 				data = {
+					'account': account,
 					'user': user,
 					'pass': pass
 				};
