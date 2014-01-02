@@ -318,6 +318,7 @@ try {
 
 		grunt.registerTask('umbraco', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'shell:npminstall', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
 		grunt.registerTask('frontend', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'shell:npminstall', 'git:push']);
+		grunt.registerTask('test', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'shell:npminstall']);
 	};
 
 	process.on('uncaughtException', function (err) {

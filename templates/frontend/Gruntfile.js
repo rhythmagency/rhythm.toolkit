@@ -13,7 +13,8 @@ module.exports = function (grunt) {
 					'css': '<%= config.paths.project.public %>/css',
 					'less': '<%= config.paths.project.public %>/less',
 					'sass': '<%= config.paths.project.public %>/sass',
-					'js': '<%= config.paths.project.public %>/js'
+					'js': '<%= config.paths.project.public %>/js',
+					'js_node_modules': './node_modules/RHYTHM'
 				}
 			},
 			'files': {
@@ -26,6 +27,7 @@ module.exports = function (grunt) {
 			},
 			'watch': {
 				'js': '<%= config.paths.project.js %>/**/*.js',
+				'js_node_modules': '<%= config.paths.project.js_node_modules %>/**/*.js',
 				'js_hbs': '<%= config.paths.project.js %>/**/*.hbs',
 				'js_jade': '<%= config.paths.project.js %>/**/*.jade',
 				'less': '<%= config.paths.project.less %>/**/*.less',
@@ -96,7 +98,7 @@ module.exports = function (grunt) {
 
 		'watch': {
 			'js': {
-				'files': ['<%= config.watch.js %>', '<%= config.watch.js_hbs %>', '<%= config.watch.js_jade %>', '!<%= config.files.app_min_js %>'],
+				'files': ['<%= config.watch.js %>', '<%= config.watch.js_node_modules %>', '<%= config.watch.js_hbs %>', '<%= config.watch.js_jade %>', '!<%= config.files.app_min_js %>'],
 				'tasks': ['browserify', 'uglify']
 			},
 			'css': {
