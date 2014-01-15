@@ -1,4 +1,12 @@
+- var objectToArray = function (o) {
+-    var a = [];
+-    for(var i in o) {
+-        a.push({'key': i, 'value': o[i]});
+-    }
+-    return a;
+- }
+
 ul
-	each data,page in public.data
+	each data,page in objectToArray(public._data).sort(function (a,b) { if (a.value.title < b.value.title) { return -1; }; if (a.value.title > b.value.title) { return 1; }; return 0; })
 		li
-			a(href="/" + page, target="_blank") #{data.title}
+			a(href="/" + data.key) #{data.value.title}
