@@ -49,7 +49,7 @@ try {
 			'config': {
 				'name': name,
 				'domain': domain,
-				'data': grunt.file.readJSON(dataPath),
+				'data': grunt.file.exists(dataPath) ? grunt.file.readJSON(dataPath) : {},
 				'paths': {
 					'bitbucket': 'https://bitbucket.org/api/2.0/repositories/<%= config.data.account %>/<%= config.name.toLowerCase() %>',
 					'git': 'ssh://git@bitbucket.org/<%= config.data.account %>/',
@@ -310,6 +310,8 @@ try {
 					'user': user,
 					'pass': pass
 				};
+
+			grunt.file.mkdir(path.dirname(file));
 
 			grunt.file.write(file, JSON.stringify(data), {
 				'encoding': 'utf-8'

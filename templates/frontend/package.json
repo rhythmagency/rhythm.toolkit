@@ -18,10 +18,8 @@
 		"grunt-contrib-less": "*",
 		"grunt-cssc": "*",
 		"matchdep": "*",
-		"handlebars": "*",
-		"hbsfy": "*",
 		"jade": "*",
-		"simple-jadeify": "*",
+		"jadeify": "*",
 		"browserify": "*",
 		"grunt-browserify": "*"
 	},

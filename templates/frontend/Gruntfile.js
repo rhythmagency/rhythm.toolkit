@@ -28,7 +28,6 @@ module.exports = function (grunt) {
 			'watch': {
 				'js': '<%= config.paths.project.js %>/**/*.js',
 				'js_node_modules': '<%= config.paths.project.js_node_modules %>/**/*.js',
-				'js_hbs': '<%= config.paths.project.js %>/**/*.hbs',
 				'js_jade': '<%= config.paths.project.js %>/**/*.jade',
 				'less': '<%= config.paths.project.less %>/**/*.less',
 				'sass': '<%= config.paths.project.sass %>/**/*.scss'
@@ -49,7 +48,7 @@ module.exports = function (grunt) {
 					'<%= config.files.app_min_js %>': ['<%= config.files.app_js %>']
 				},
 				'options': {
-					transform: ['hbsfy', 'simple-jadeify']
+					transform: ['jadeify']
 				}
 			}
 		},
@@ -98,7 +97,7 @@ module.exports = function (grunt) {
 
 		'watch': {
 			'js': {
-				'files': ['<%= config.watch.js %>', '<%= config.watch.js_node_modules %>', '<%= config.watch.js_hbs %>', '<%= config.watch.js_jade %>', '!<%= config.files.app_min_js %>'],
+				'files': ['<%= config.watch.js %>', '<%= config.watch.js_node_modules %>', '<%= config.watch.js_jade %>', '!<%= config.files.app_min_js %>'],
 				'tasks': ['browserify', 'uglify']
 			},
 			'css': {
