@@ -82,7 +82,7 @@ try {
 						'umbraco': '<%= config.paths.temp %>/umbraco.zip'
 					},
 					'remote': {
-						'umbraco': 'http://our.umbraco.org/ReleaseDownload?id=104481'
+						'umbraco': 'http://our.umbraco.org/ReleaseDownload?id=107492'
 					}
 				}
 			},
