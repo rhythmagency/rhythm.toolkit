@@ -12,9 +12,10 @@ head
 	meta(name="keywords", content="")
 	link(rel="stylesheet", href="/css/app.css")
 	script(src="/js/app.min.js")
+	block head
 body
 	article
 		header
 		section
-			!= yield
+			block content
 		footer

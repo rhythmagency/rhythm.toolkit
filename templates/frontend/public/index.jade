@@ -1,12 +1,13 @@
-- var objectToArray = function (o) {
--    var a = [];
--    for(var i in o) {
--        a.push({'key': i, 'value': o[i]});
--    }
--    return a;
-- }
+block content
+	- var objectToArray = function (o) {
+	-    var a = [];
+	-    for(var i in o) {
+	-        a.push({'key': i, 'value': o[i]});
+	-    }
+	-    return a;
+	- }
 
-ul
-	each data,page in objectToArray(public._data).sort(function (a,b) { if (a.value.title < b.value.title) { return -1; }; if (a.value.title > b.value.title) { return 1; }; return 0; })
-		li
-			a(href="/" + data.key) #{data.value.title}
+	ul
+		each data,page in objectToArray(public._data).sort(function (a,b) { if (a.value.title < b.value.title) { return -1; }; if (a.value.title > b.value.title) { return 1; }; return 0; })
+			li
+				a(href="/" + data.key) #{data.value.title}
