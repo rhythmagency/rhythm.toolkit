@@ -2,7 +2,8 @@ try {
 	'use strict';
 
 	var _ = require('underscore'),
-		path = require('path-extra');
+		path = require('path-extra'),
+		chalk = require('chalk');
 
 	_.str = require('underscore.string');
 	_.mixin(_.str.exports());
@@ -79,17 +80,20 @@ try {
 					'data': dataPath,
 					'gitindexlock': '<%= config.paths.project.root %>/.git/index.lock',
 					'zip': {
-						'umbraco': '<%= config.paths.temp %>/umbraco.zip'
+						'umbraco': '<%= config.paths.temp %>/umbraco-<%= config.files.remote.umbraco.version %>.zip'
 					},
 					'remote': {
-						'umbraco': 'http://our.umbraco.org/ReleaseDownload?id=107492'
+						'umbraco': {
+							'version': '7.0.2',
+							'url': 'http://our.umbraco.org/ReleaseDownload?id=107492'
+						}
 					}
 				}
 			},
 
 			'curl': {
 				'umbraco': {
-					'src': '<%= config.files.remote.umbraco %>',
+					'src': '<%= config.files.remote.umbraco.url %>',
 					'dest': '<%= config.files.zip.umbraco %>'
 				}
 			},
@@ -194,6 +198,10 @@ try {
 			},
 
 			'shell': {
+				'gitinit': {
+					'options': gitOptions,
+					'command': 'git init'
+				},
 				'gitclone': {
 					'options': gitOptions,
 					'command': 'git clone <%= config.paths.git %><%= config.name %>.git .'
@@ -222,17 +230,9 @@ try {
 					'options': gitOptions,
 					'command': 'git commit -m "Initial Commit."'
 				},
-				'gitpushmaster': {
+				'gitpush': {
 					'options': gitOptions,
-					'command': 'git push origin master'
-				},
-				'gitpushdevelopment': {
-					'options': gitOptions,
-					'command': 'git push origin development'
-				},
-				'gitpushfrontend': {
-					'options': gitOptions,
-					'command': 'git push origin feature/frontend'
+					'command': 'git push --all'// origin -u'
 				},
 				'gitmerge': {
 					'options': gitOptions,
@@ -244,6 +244,10 @@ try {
 						'stderr': false
 					},
 					'command': 'cp "<%= config.paths.templates.gitignore %>" "<%= config.paths.project.gitignore %>"'
+				},
+				'gitautocrlf': {
+					'options': gitOptions,
+					'command': 'git config --global core.safecrlf false'
 				},
 				'npminstall': {
 					'options': {
@@ -281,9 +285,44 @@ try {
 				}
 			},
 
-			'git': {
-				'init': ['shell:gitclone', 'wait:gitindexlock', 'shell:gitcheckoutmaster', 'wait:gitindexlock'],
-				'push': ['shell:gitadd', 'wait:gitindexlock', 'shell:gitcommit', 'wait:gitindexlock', 'shell:gitcheckoutdevelopment', 'shell:gitmerge', 'shell:gitcheckoutfrontend', 'shell:gitmerge', 'shell:gitpushmaster', 'shell:gitpushdevelopment', 'shell:gitpushfrontend']
+			'attention': {
+				'umbracounzip': {
+					'options': {
+						'message': 'Extracting "' + chalk.underline.blue('<%= config.files.zip.umbraco %>') + '". This may take a while.',
+						'borderColor': 'blue',
+						'border': 'double'
+					}
+				}
+			},
+
+			'git': [
+				'shell:gitinit',
+				'wait:gitindexlock',
+				'shell:gitautocrlf',
+				'wait:gitindexlock',
+				'shell:gitremote',
+				'wait:gitindexlock',
+				'shell:gitignore',
+				'wait:gitindexlock',
+				'shell:gitcheckoutmaster',
+				'wait:gitindexlock',
+				'shell:gitadd',
+				'wait:gitindexlock',
+				'shell:gitcommit',
+				'wait:gitindexlock',
+				'shell:gitcheckoutdevelopment',
+				'wait:gitindexlock',
+				'shell:gitcheckoutfrontend',
+				'wait:gitindexlock',
+				'shell:gitpush',
+				'wait:gitindexlock'
+			],
+
+			'ifNotExists': {
+				'umbraco': {
+					'task': 'curl:umbraco',
+					'file': '<%= config.files.zip.umbraco %>'
+				}
 			}
 		});
 
@@ -318,8 +357,18 @@ try {
 			});
 		});
 
-		grunt.registerTask('umbraco', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'shell:npminstall', 'curl:umbraco', 'unzip:umbraco', 'git:push']);
-		grunt.registerTask('frontend', ['http:create', 'git:init', 'shell:gitignore', 'copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'shell:npminstall', 'git:push']);
+		grunt.task.registerMultiTask('ifNotExists', 'Runs the specified task only if the specified file (must be a variable) does not exist', function () {
+			if (this.data.file && this.data.task) {
+				var filePath = grunt.config.process(this.data.file);
+
+				if (!grunt.file.exists(filePath)) {
+					grunt.task.run(this.data.task);
+				}
+			}
+		});
+
+		grunt.registerTask('umbraco', ['copy:docs', 'copy:frontend', 'copy:umbraco', 'fileregexrename-mod', 'replace-mod', 'rename', 'shell:npminstall', 'ifNotExists:umbraco', 'attention:umbracounzip', 'unzip:umbraco', 'http:create', 'git']);
+		grunt.registerTask('frontend', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'shell:npminstall', 'http:create', 'git']);
 		grunt.registerTask('test', ['copy:docs', 'copy:frontend', 'fileregexrename-mod', 'replace-mod', 'rename:frontend', 'shell:npminstall']);
 	};
 

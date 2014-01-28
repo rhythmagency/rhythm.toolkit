@@ -1,48 +1,50 @@
 {
-	"name": "rhythm.toolkit",
-	"description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
-	"version": "0.0.19",
-	"author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
-	"contributors": [
-		{
-			"name": "Michael Lawrence",
-			"email": "michael.lawrence@rhythmagency.com"
-		}
-	],
-	"homepage": "http://rhythmagency.com",
-	"bugs": "https://github.com/rhythmagency/rhythm.toolkit/issues",
-	"main": "./rtk.js",
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:rhythmagency/rhythm.toolkit.git"
-	},
-	"dependencies": {
-		"grunt": "*",
-		"grunt-contrib-copy": "*",
-		"grunt-curl": "*",
-		"grunt-http": "*",
-		"grunt-rename": "*",
-		"grunt-shell": "*",
-		"grunt-wait": "*",
-		"grunt-zip": "*",
-		"matchdep": "*",
-		"path-extra": "*",
-		"underscore": "*",
-		"underscore.string": "*"
-	},
-	"license": "MIT",
-	"preferGlobal": true,
-	"bin": {
-		"rtk": "./bin/rtk"
-	},
-	"scripts": {
-		"preinstall": "npm i -g grunt-cli"
-	},
-	"engines": {
-		"node": ">=0.10"
-	},
-	"keywords": [
-		"rhythm",
-		"toolkit"
-	]
+  "name": "rhythm.toolkit",
+  "description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
+  "version": "0.0.19",
+  "author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
+  "contributors": [
+    {
+      "name": "Michael Lawrence",
+      "email": "michael.lawrence@rhythmagency.com"
+    }
+  ],
+  "homepage": "http://rhythmagency.com",
+  "bugs": "https://github.com/rhythmagency/rhythm.toolkit/issues",
+  "main": "./rtk.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rhythmagency/rhythm.toolkit.git"
+  },
+  "dependencies": {
+    "grunt": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-curl": "*",
+    "grunt-http": "*",
+    "grunt-rename": "*",
+    "grunt-shell": "*",
+    "grunt-wait": "*",
+    "grunt-zip": "*",
+    "matchdep": "*",
+    "path-extra": "*",
+    "underscore": "*",
+    "underscore.string": "*",
+    "grunt-attention": "*",
+    "chalk": "*"
+  },
+  "license": "MIT",
+  "preferGlobal": true,
+  "bin": {
+    "rtk": "./bin/rtk"
+  },
+  "scripts": {
+    "preinstall": "npm i -g grunt-cli"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "keywords": [
+    "rhythm",
+    "toolkit"
+  ]
 }
