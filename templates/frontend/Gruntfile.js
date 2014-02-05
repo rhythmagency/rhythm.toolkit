@@ -1,114 +1,104 @@
 'use strict';
 
 module.exports = function (grunt) {
+	var _ = require('lodash');
+
 	// Load all grunt plugins
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
 	grunt.initConfig({
 		'config': {
-			'name': 'test',
 			'paths': {
-				'project': {
-					'public': './public',
-					'css': '<%= config.paths.project.public %>/css',
-					'less': '<%= config.paths.project.public %>/less',
-					'sass': '<%= config.paths.project.public %>/sass',
-					'js': '<%= config.paths.project.public %>/js',
-					'js_node_modules': './node_modules/RHYTHM',
-					'js_jade': '<%= config.paths.js_node_modules %>/lib/templates'
-				}
+				'public': './public',
+				'js': '<%= config.paths.public %>/js',
+				'js_node_modules': './node_modules/RHYTHM',
+				'js_jade': '<%= config.paths.js_node_modules %>/lib/templates'
 			},
 			'files': {
-				'app_js': '<%= config.paths.project.js %>/app.js',
-				'app_min_js': '<%= config.paths.project.js %>/app.min.js',
-				'app_css': '<%= config.paths.project.css %>/app.css',
-				'app_css_map': '<%= config.paths.project.css %>/app.css.map',
-				'app_less': '<%= config.paths.project.less %>/app.less',
-				'app_sass': '<%= config.paths.project.sass %>/app.scss',
+				'js': '<%= config.paths.js_node_modules %>/**/*.js',
+				'js_app': '<%= config.paths.js %>/app.js',
+				'js_app_min': '<%= config.paths.js %>/app.min.js',
 				'js_templates': '<%= config.paths.js_jade %>/templates.js',
 				'js_jade': '<%= config.paths.js_jade %>/**/*.jade'
 			},
 			'watch': {
-				'js': '<%= config.paths.project.js %>/**/*.js',
-				'js_node_modules': '<%= config.paths.project.js_node_modules %>/**/*.js',
-				'js_jade': '<%= config.paths.project.js %>/**/*.jade',
-				'less': '<%= config.paths.project.less %>/**/*.less',
-				'sass': '<%= config.paths.project.sass %>/**/*.scss'
+				'js': '<%= config.paths.js %>/**/*.js',
+				'js_node_modules': '<%= config.paths.js_node_modules %>/**/*.js',
+				'js_jade': '<%= config.paths.js_jade %>/*.jade'
 			}
 		},
 
+		'jade': {
+			'options': {
+				'client': true,
+				'amd': false
+			},
+			'<%= config.files.js_templates %>': '<%= config.watch.js_jade %>'
+		},
+		'surround': {
+			'options': {
+				'prepend': ';(function() { var jade = require("jade/runtime");',
+				'append': 'module.exports = this["JST"];})();'
+			},
+			'<%= config.files.js_templates %>': '<%= config.files.js_templates %>'
+		},
+		'replace': {
+			'build': {
+				'src': ['<%= config.files.js_templates %>'],
+				'overwrite': true,
+				'replacements': [
+					{
+						'from': '<%= config.paths.js_jade %>/',
+						'to': ''
+					}
+				]
+			}
+		},
 		'uglify': {
 			'build': {
 				'files': {
-					'<%= config.files.app_min_js %>': ['<%= config.files.app_min_js %>']
+					'<%= config.files.js_app_min %>': ['<%= config.files.js_app_min %>']
 				}
 			}
 		},
-
 		'browserify': {
 			'build': {
 				'files': {
-					'<%= config.files.app_min_js %>': ['<%= config.files.app_js %>']
-				},
-				'options': {
-					transform: ['jadeify']
+					'<%= config.files.js_app_min %>': ['<%= config.files.js_app %>']
 				}
 			}
 		},
-
-		'cssc': {
-			'build': {
-				'options': {
-					'consolidateViaDeclarations': true,
-					'consolidateViaSelectors': true,
-					'consolidateMediaQueries': true
-				},
-				'files': {
-					'<%= config.files.app_css %>': '<%= config.files.app_css %>'
-				}
-			}
-		},
-
-		'cssmin': {
-			'build': {
-				'src': '<%= config.files.app_css %>',
-				'dest': '<%= config.files.app_css %>'
-			}
-		},
-
-		'sass': {
-			'build': {
-				'files': {
-					'<%= config.files.app_css %>': '<%= config.files.app_sass %>'
-				}
-			}
-		},
-
-		'less': {
-			'build': {
-				'options': {
-					'compress': true,
-					'cleancss': true,
-					'sourceMap': true,
-					'sourceMapFilename': '<%= config.files.app_css_map %>'
-				},
-				'files': {
-					'<%= config.files.app_css %>': '<%= config.files.app_less %>'
-				}
-			}
-		},
-
 		'watch': {
-			'js': {
-				'files': ['<%= config.watch.js %>', '<%= config.watch.js_node_modules %>', '<%= config.watch.js_jade %>', '!<%= config.files.app_min_js %>'],
-				'tasks': ['browserify', 'uglify']
+			'options': {
+				'debounceDelay': 250
 			},
-			'css': {
-				'files': ['<%= config.watch.less %>', '<%= config.watch.sass %>'],
-				'tasks': ['less', 'sass', 'cssc', 'cssmin']
+			'jade': {
+				'files': '<%= config.files.js_jade %>',
+				'tasks': 'build:jade'
+			},
+			'js': {
+				'files': '<%= config.files.js %>',
+				'tasks': 'build:js'
+			}
+		},
+		'build': {
+			'jade': ['jade', 'surround', 'replace'],
+			'js': ['browserify', 'uglify']
+		},
+		'concurrent': {
+			'watch': {
+				'options': {
+					'logConcurrentOutput': true
+				},
+				'tasks': ['watch:jade', 'watch:js']
 			}
 		}
 	});
 
-	grunt.registerTask('default', ['watch']);
+
+	grunt.task.registerMultiTask('build', 'Build Jade or JavaScript files.', function () {
+		grunt.task.run(this.data);
+	});
+
+	grunt.task.registerTask('default', ['concurrent']);
 };

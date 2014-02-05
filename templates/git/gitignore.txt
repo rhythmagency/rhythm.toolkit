@@ -18,7 +18,7 @@ _notes
 # General
 ############################
 .sass-cache
-.log
+*.log
 
 # OS Generated
 ############################
@@ -36,3 +36,8 @@ Thumbs.db
 */App_Data/TEMP
 */App_Data/Logs
 */App_Data/courier/cache
+
+# node.js
+############################
+node_modules
+!**/public/js/node_modules

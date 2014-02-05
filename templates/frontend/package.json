@@ -17,6 +17,7 @@
 		"grunt-contrib-sass": "*",
 		"grunt-contrib-uglify": "*",
 		"grunt-contrib-watch": "*",
+		"grunt-browserify": "*",
 		"grunt-concurrent": "*",
 		"grunt-cssc": "*",
 		"grunt-surround": "*",
