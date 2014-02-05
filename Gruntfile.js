@@ -214,9 +214,9 @@ try {
 					'options': gitOptions,
 					'command': 'git checkout -b master'
 				},
-				'gitcheckoutdevelopment': {
+				'gitcheckoutdevelop': {
 					'options': gitOptions,
-					'command': 'git checkout -b development'
+					'command': 'git checkout -b develop'
 				},
 				'gitcheckoutfrontend': {
 					'options': gitOptions,
@@ -310,7 +310,7 @@ try {
 				'wait:gitindexlock',
 				'shell:gitcommit',
 				'wait:gitindexlock',
-				'shell:gitcheckoutdevelopment',
+				'shell:gitcheckoutdevelop',
 				'wait:gitindexlock',
 				'shell:gitcheckoutfrontend',
 				'wait:gitindexlock',

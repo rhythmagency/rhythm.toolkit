@@ -12,16 +12,17 @@
 	"devDependencies": {
 		"grunt": "*",
 		"grunt-contrib-cssmin": "*",
+		"grunt-contrib-jade": "*",
+		"grunt-contrib-less": "*",
 		"grunt-contrib-sass": "*",
 		"grunt-contrib-uglify": "*",
 		"grunt-contrib-watch": "*",
-		"grunt-contrib-less": "*",
+		"grunt-concurrent": "*",
 		"grunt-cssc": "*",
-		"matchdep": "*",
-		"jade": "*",
-		"jadeify": "*",
+		"grunt-surround": "*",
+		"grunt-text-replace": "*",
 		"browserify": "*",
-		"grunt-browserify": "*"
+		"matchdep": "*"
 	},
 	"repository": {
 		"type": "git",

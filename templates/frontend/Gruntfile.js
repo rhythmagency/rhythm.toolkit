@@ -14,7 +14,8 @@ module.exports = function (grunt) {
 					'less': '<%= config.paths.project.public %>/less',
 					'sass': '<%= config.paths.project.public %>/sass',
 					'js': '<%= config.paths.project.public %>/js',
-					'js_node_modules': './node_modules/RHYTHM'
+					'js_node_modules': './node_modules/RHYTHM',
+					'js_jade': '<%= config.paths.js_node_modules %>/lib/templates'
 				}
 			},
 			'files': {
@@ -23,7 +24,9 @@ module.exports = function (grunt) {
 				'app_css': '<%= config.paths.project.css %>/app.css',
 				'app_css_map': '<%= config.paths.project.css %>/app.css.map',
 				'app_less': '<%= config.paths.project.less %>/app.less',
-				'app_sass': '<%= config.paths.project.sass %>/app.scss'
+				'app_sass': '<%= config.paths.project.sass %>/app.scss',
+				'js_templates': '<%= config.paths.js_jade %>/templates.js',
+				'js_jade': '<%= config.paths.js_jade %>/**/*.jade'
 			},
 			'watch': {
 				'js': '<%= config.paths.project.js %>/**/*.js',
