@@ -1,7 +1,7 @@
 {
   "name": "rhythm.toolkit",
   "description": "Rhythm Toolkit for creating new projects and watching files in existing projects.",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "author": "Michael Lawrence <michael.lawrence@rhythmagency.com>",
   "contributors": [
     {
