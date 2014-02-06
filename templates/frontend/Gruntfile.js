@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 			'paths': {
 				'public': './public',
 				'js': '<%= config.paths.public %>/js',
-				'js_node_modules': './node_modules/RHYTHM',
+				'js_node_modules': '<%= config.paths.js %>/node_modules/RHYTHM',
 				'js_jade': '<%= config.paths.js_node_modules %>/lib/templates'
 			},
 			'files': {
@@ -82,7 +82,7 @@ module.exports = function (grunt) {
 			}
 		},
 		'build': {
-			'jade': ['jade', 'surround', 'replace'],
+			'jade': ['jade', 'exists:jade'],
 			'js': ['browserify', 'uglify']
 		},
 		'concurrent': {
@@ -92,9 +92,23 @@ module.exports = function (grunt) {
 				},
 				'tasks': ['watch:jade', 'watch:js']
 			}
+		},
+		'exists': {
+			'jade': {
+				'<%= config.files.js_templates %>': ['surround', 'replace']
+			}
 		}
 	});
 
+	grunt.registerMultiTask('exists', 'File Existence', function () {
+		_.each(this.data, function (task, file) {
+			var filePath = grunt.config.process(file);
+
+			if (grunt.file.exists(filePath)) {
+				grunt.task.run(task);
+			}
+		});
+	});
 
 	grunt.task.registerMultiTask('build', 'Build Jade or JavaScript files.', function () {
 		grunt.task.run(this.data);
