@@ -84,8 +84,8 @@ try {
 					},
 					'remote': {
 						'umbraco': {
-							'version': '7.1.2',
-							'url': 'http://our.umbraco.org/ReleaseDownload?id=122589'
+							'version': '7.1.4',
+							'url': 'http://our.umbraco.org/ReleaseDownload?id=125627'
 						}
 					}
 				}
