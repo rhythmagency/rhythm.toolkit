@@ -1,15 +1,15 @@
-rhythm.toolkit
-==============
+### DEPRECATED: Use the [generator-rhythm](https://github.com/rhythmagency/generator-rhythm) project instead.
+
+# rhythm.toolkit
 
 Toolkit for creating new projects and watching files in existing projects.
 
-
-## Installation
+### Installation
 
     npm i -g rhythm.toolkit --unsafe-perm
     
     
-## Usage
+### Usage
 
 #####Help
 
